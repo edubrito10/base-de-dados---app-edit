@@ -1,3 +1,6 @@
+# para perceber o erro ( ignorem isto )
+
+
 import tkinter as tk
 
 try:
