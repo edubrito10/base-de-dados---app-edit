@@ -2,7 +2,7 @@ import pyodbc
 from datetime import datetime
 import uuid
 import time
-from tkinter import messagebox # Usado para o 'pausar'
+from tkinter import messagebox
 
 class DbConnectionEdit:
     """
@@ -11,9 +11,7 @@ class DbConnectionEdit:
     """
     def __init__(self):
         self.conn = None
-        # ATUALIZADO: Driver 18, como no 'teste.py' da tua colega
         self.DRIVER = '{ODBC Driver 17 for SQL Server}' 
-        # ATUALIZADO: Base de dados do teu grupo (ex: 01)
         self.DATABASE_NAME = 'SGBD_PL1_02' 
         self.NIVEL_ISOLAMENTO_ATUAL = 'READ COMMITTED'
         self.SERVER_NAME = '' # Será definido no connect
@@ -31,7 +29,7 @@ class DbConnectionEdit:
             f"DATABASE={database};"
             f"UID={username};"
             f"PWD={password};"
-            "TrustServerCertificate=yes;" # Adicionado da tua colega
+            "TrustServerCertificate=yes;" 
         )
         
         try:

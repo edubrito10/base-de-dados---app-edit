@@ -2,12 +2,11 @@ import tkinter as tk
 from tkinter import messagebox, simpledialog, ttk
 import sys
 
-# Importar a *classe* do motor de BD
+# motor de BD
 try:
     from db_motor_edit import DbConnectionEdit
 except ImportError:
     print("AVISO: Ficheiro 'db_motor_edit.py' não encontrado. A usar MOCK.")
-    # Fallback/Mock para desenvolvimento
     class MockDbConnectionEdit:
         DRIVER = '{ODBC Driver 18 for SQL Server}'
         DATABASE_NAME = 'SGBD_PL1_02'
@@ -43,9 +42,7 @@ except ImportError:
     DbConnectionEdit = MockDbConnectionEdit # Substitui a classe real pela MOCK
 
 
-# --------------------------------------------------------------------------------
-# --- PASSO 1: A JANELA DE LOGIN (COM FOCO CORRIGIDO) ---
-# --------------------------------------------------------------------------------
+#JANELA DE LOGIN
 
 class LoginDialog(tk.Toplevel):
     def __init__(self, master):
@@ -62,12 +59,12 @@ class LoginDialog(tk.Toplevel):
         y = (self.winfo_screenheight() // 2) - (height // 2)
         self.geometry('+%d+%d' % (x, y))
 
-        # --- Valores Padrão para o teu grupo (ex: 01) ---
+
         self.server_var = tk.StringVar(value="192.168.100.14,1433") 
         self.db_var = tk.StringVar(value="SGBD_PL1_02")
         self.user_var = tk.StringVar(value="User_SGBD_PL1_02")
         self.password_var = tk.StringVar(value="diubi:2025!SGBD!PL1_02")
-        # ----------------------------------------------------------
+
 
         self._criar_widgets()
         
@@ -119,13 +116,9 @@ class LoginDialog(tk.Toplevel):
         self.result = None 
         self.destroy()
 
-# --------------------------------------------------------------------------------
-# --- PASSO 2: A APLICAÇÃO PRINCIPAL (AppEdit) ---
-# --------------------------------------------------------------------------------
 
+# APLICAÇÃO PRINCIPAL
 class AppEdit(tk.Tk):
-    # --- CORREÇÃO PYLANCE (Linha 127) ---
-    # Removida a anotação de tipo ": DbConnectionEdit" que causava o erro Pylance
     def __init__(self, db_connection):
         super().__init__()
         self.title("MEI - Aplicação Edit | Controlo de Transações")
@@ -168,7 +161,7 @@ class AppEdit(tk.Tk):
         self.aplicar_isolamento()
 
     def aplicar_isolamento(self):
-        """ Aplica o nível de isolamento escolhido usando o motor de BD. """
+        # Aplica o nível de isolamento escolhido usando o motor de BD.
         nivel = self.isolation_var.get()
         if self.db.set_isolation(nivel):
             self.status_conn.config(text=f"Estado: CONECTADO | {nivel}", fg="green")
@@ -263,7 +256,7 @@ class AppEdit(tk.Tk):
             pass # Cancelado
 
     def atualizar_lista_produtos(self, linhas_db):
-        """ Atualiza a Treeview com os dados lidos da BD. """
+        # Atualiza a Treeview com os dados lidos da BD. 
         # Limpa a árvore
         for i in self.tree.get_children():
             self.tree.delete(i)
@@ -273,7 +266,7 @@ class AppEdit(tk.Tk):
             self.tree.insert("", "end", values=(linha.Produtold, linha.Designacao, linha.Preco, linha.Qtd))
             
     def iniciar_transacao(self, pausar=False):
-        """ Função principal que chama o motor de BD (Passos 2, 3, 5, 6, 7). """
+        # Função principal que chama o motor de BD (Passos 2, 3, 5, 6, 7). 
         if not self.is_connected:
              messagebox.showerror("Erro", "Perda de conexão.")
              return
@@ -309,15 +302,14 @@ class AppEdit(tk.Tk):
         except Exception as e:
             messagebox.showerror("Erro na Transação", f"Ocorreu um erro: {e}")
 
-# --------------------------------------------------------------------------------
-# --- PASSO 3: O CONTROLADOR PRINCIPAL (TESTE DIRETO SEM LOGIN) ---
-# --------------------------------------------------------------------------------
+
+# CONTROLADOR PRINCIPAL (TESTE DIRETO SEM LOGIN) ---
 
 if __name__ == '__main__':
     
     print("--- INICIANDO TESTE DE CONEXÃO DIRETA ---")
 
-    # 1. Temos as credenciais (hardcoded do teu grupo)
+    # 1. Temos as credenciais (hardcoded do grupo)
     creds = {
         "server": "192.168.100.14,1433",
         "database": "SGBD_PL1_02",
@@ -328,9 +320,9 @@ if __name__ == '__main__':
     print(f"A tentar conectar a {creds['server']} como {creds['user']}...")
 
     # 2. Criar o motor de BD
-    db_conn_edit = DbConnectionEdit() # Cria a instância do teu motor
+    db_conn_edit = DbConnectionEdit() # Cria a instância do motor
 
-    # 3. Tentar a conexão (O PONTO DE FALHA PROVÁVEL)
+    # 3. Tentar a conexão
     try:
         if not db_conn_edit.connect(creds['server'], creds['database'], creds['user'], creds['password']):
             # Se 'connect' retornar None (falha)
@@ -349,7 +341,7 @@ if __name__ == '__main__':
         sys.exit(1)
 
     
-    # 4. SUCESSO! Se chegou aqui, a conexão funcionou.
+    # 4. SUCESSO
     print("--- CONEXÃO BEM-SUCEDIDA ---")
     print("A iniciar AppEdit...")
     
