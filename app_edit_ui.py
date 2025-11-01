@@ -10,7 +10,7 @@ except ImportError:
     # Fallback/Mock para desenvolvimento
     class MockDbConnectionEdit:
         DRIVER = '{ODBC Driver 18 for SQL Server}'
-        DATABASE_NAME = 'SGBD_PL1_01'
+        DATABASE_NAME = 'SGBD_PL1_02'
         NIVEL_ISOLAMENTO_ATUAL = 'READ COMMITTED'
         SERVER_NAME = 'MOCK_SERVER'
         
@@ -64,9 +64,9 @@ class LoginDialog(tk.Toplevel):
 
         # --- Valores Padrão para o teu grupo (ex: 01) ---
         self.server_var = tk.StringVar(value="192.168.100.14,1433") 
-        self.db_var = tk.StringVar(value="SGBD_PL1_01")
-        self.user_var = tk.StringVar(value="User_SGBD_PL1_01")
-        self.password_var = tk.StringVar(value="diubi:2025!SGBD!PL1_01")
+        self.db_var = tk.StringVar(value="SGBD_PL1_02")
+        self.user_var = tk.StringVar(value="User_SGBD_PL1_02")
+        self.password_var = tk.StringVar(value="diubi:2025!SGBD!PL1_02")
         # ----------------------------------------------------------
 
         self._criar_widgets()
@@ -320,9 +320,9 @@ if __name__ == '__main__':
     # 1. Temos as credenciais (hardcoded do teu grupo)
     creds = {
         "server": "192.168.100.14,1433",
-        "database": "SGBD_PL1_01",
-        "user": "User_SGBD_PL1_01",
-        "password": "diubi:2025!SGBD!PL1_01"
+        "database": "SGBD_PL1_02",
+        "user": "User_SGBD_PL1_02",
+        "password": "diubi:2025!SGBD!PL1_02"
     }
     
     print(f"A tentar conectar a {creds['server']} como {creds['user']}...")
